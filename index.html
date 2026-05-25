@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Plan Final TSRMT</title>
+
+    <meta property="og:title" content="DAFTAR FINAL TSRMT(RBO)2026">
+    <meta property="og:description" content="Pendaftaran Ahli Plan Final TSRMT(RBO)2026. Klik untuk mendaftar sekarang.">
+    <meta property="og:image" content="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        :root { --gold: #D4AF37; --gold-light: #F4C430; --black: #0a0a0a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--black); color: #fff; min-height: 100vh; overflow-x: hidden; }
+
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
+        .page { display: none; width: 100%; } 
+        .active-page { display: flex; flex-direction: column; align-items: center; }
+
+        .logo { width: 130px; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.5)); }
+        .title { font-family: 'Cinzel', serif; color: var(--gold); text-align: center; margin-bottom: 30px; font-size: 1.8rem; text-shadow: 0 0 10px rgba(212,175,55,0.3); line-height: 1.3; }
+        
+        .btn { width: 100%; max-width: 400px; padding: 15px; background: linear-gradient(to right, var(--gold), var(--gold-light)); color: var(--black); border: none; border-radius: 8px; font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(212,175,55,0.3); position: relative; z-index: 5; display: block; margin: 0 auto 15px auto; text-align: center; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.5); }
+        .btn-back { background: #333 !important; color: var(--gold) !important; border: 1px solid var(--gold) !important; box-shadow: none !important; }
+        .btn-start { font-size: 1.5rem; padding: 20px; letter-spacing: 2px; }
+        .btn-pdf { background: linear-gradient(to right, #222, #000) !important; color: var(--gold) !important; border: 2px solid var(--gold) !important; }
+
+        .note-box { background: rgba(212, 175, 55, 0.05); border: 1px solid #333; padding: 15px; border-radius: 8px; margin-bottom: 20px; width: 100%; max-width: 400px; }
+        .note-text { font-size: 0.85rem; color: #aaa; line-height: 1.5; text-align: left; }
+        .note-text strong { color: var(--gold); }
+
+        .form-section { background: rgba(20,20,20,0.8); border: 1px solid var(--gold); border-radius: 12px; padding: 20px; margin-bottom: 20px; width: 100%; }
+        .section-title { color: var(--gold); border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; font-family: 'Cinzel', serif; text-align: left; }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #aaa; font-size: 0.9rem; }
+        input, select, textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #444; color: var(--gold); border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 1rem; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); }
+        
+        .imbuhan-box { background: rgba(212, 175, 55, 0.1); padding: 15px; border-radius: 8px; text-align: center; margin-top: 10px; border: 1px dashed var(--gold); }
+        .imbuhan-label { font-size: 0.9rem; color: #aaa; }
+        .imbuhan-value { font-size: 1.8rem; font-weight: 800; color: #F4C430; font-family: 'Cinzel', serif; }
+
+        .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; }
+        .spinner { border: 4px solid rgba(212,175,55,0.3); border-radius: 50%; border-top: 4px solid var(--gold); width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .home-container { position: relative; width: 100%; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 30px; }
+        .premium-box { position: relative; z-index: 3; background: rgba(10, 10, 10, 0.95); border: 4px solid var(--gold); outline: 2px solid var(--gold); outline-offset: 6px; border-radius: 20px; padding: 50px 30px; box-shadow: 0 0 60px rgba(212, 175, 55, 0.4); text-align: center; }
+        .glow-title { text-shadow: 0 0 20px rgba(212, 175, 55, 0.8); animation: pulse-glow 2s infinite alternate; }
+        @keyframes pulse-glow { from { text-shadow: 0 0 20px rgba(212, 175, 55, 0.8); } to { text-shadow: 0 0 30px rgba(244, 196, 48, 1); } }
+        .butterfly { position: absolute; font-size: 1.5rem; z-index: 5; opacity: 0; filter: drop-shadow(0 0 8px var(--gold)); animation: fly 15s linear infinite; pointer-events: none; }
+        @keyframes fly { 0% { transform: translate(0, 0) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.9; } 90% { opacity: 0.9; } 100% { transform: translate(800px, -600px) rotate(360deg) scale(1.2); opacity: 0; } }
+        .sparkle { position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%; z-index: 1; animation: blink 2s infinite alternate; box-shadow: 0 0 10px #fff, 0 0 20px var(--gold); pointer-events: none; }
+        @keyframes blink { 0% { opacity: 0.2; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.2); } }
+
+        /* RECEIPT STYLES */
+        .receipt-container { background: #000; color: #fff; padding: 30px; border: 4px double var(--gold); width: 100%; max-width: 500px; margin: 20px auto; font-family: 'Poppins', sans-serif; }
+        .receipt-header { text-align: center; border-bottom: 2px solid #D4AF37; padding-bottom: 15px; margin-bottom: 20px; }
+        .receipt-success { font-size: 2rem; font-weight: 900; color: #28a745; text-align: center; letter-spacing: 2px; margin: 10px 0; text-shadow: 0 0 10px rgba(40,167,69,0.5); }
+        .receipt-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 15px 0; }
+        .receipt-table td { padding: 8px; border-bottom: 1px solid #333; }
+        .receipt-table td:first-child { font-weight: 600; color: var(--gold); width: 40%; }
+        .receipt-note { text-align: center; color: #666; font-size: 0.75rem; margin-top: 20px; border-top: 1px solid #333; padding-top: 10px; }
+        #resit-img { width: 100%; height: auto; border: 1px solid #555; border-radius: 5px; margin-top: 10px; }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="home-page" class="page active-page"><div class="home-container" id="homeAnimationBox"><div class="premium-box"><img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" alt="Logo" class="logo" style="width: 140px;"><h1 class="title glow-title" style="font-size: 2rem;">PENDAFTARAN PLAN FINAL<br>TSRMT(RBO)2026</h1><div style="height: 2px; width: 50%; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 20px auto;"></div><button class="btn btn-start" onclick="playClick(); showPage('select')">MULA</button></div></div></div>
+
+        <div id="page-select" class="page" style="justify-content: center; min-height: 90vh;"><img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" alt="Logo" class="logo"><h2 class="title" style="font-size: 1.5rem;">SILA BUAT PILIHAN</h2><button class="btn" onclick="playClick(); showPage('lama')">AHLI LAMA</button><button class="btn" onclick="playClick(); showPage('baru')" style="background: linear-gradient(to right, #333, #111); color: var(--gold); border: 2px solid var(--gold);">AHLI BARU</button><div class="note-box"><div class="note-text"><strong>AHLI LAMA</strong> - Ahli yang pernah beli plan di TSRMT sebelum ini.<br><br><strong>AHLI BARU</strong> - Ahli yang tidak pernah langsung beli plan di TSRMT sebelum ini.</div></div><button class="btn btn-back" onclick="playClick(); showPage('home')" style="max-width: 200px; font-size: 1rem;">KEMBALI</button></div>
+
+                <div id="page-lama" class="page">
+            <img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" alt="Logo" class="logo" style="width: 80px;">
+            <h2 class="title" style="font-size: 1.2rem;">PENDAFTARAN PLAN FINAL TSRMT (RBO) 2026<br><span style="font-size:1rem; color:#fff;">- AHLI LAMA -</span></h2>
+            <form id="formLama" onsubmit="return submitForm('LAMA')" style="width: 100%;">
+                <div class="form-section">
+                    <h3 class="section-title">MAKLUMAT AHLI</h3>
+                    <div class="form-group"><label>GROUP</label><select id="l-group" required><option value="" disabled selected>Pilih Group</option><option>TSRMT 1</option><option>TSRMT 2</option><option>TSRMT 3</option><option>TSRMT 4</option><option>TSRMT 5</option><option>TSRMT 6</option><option>TSRMT 7</option><option>TSRMT 8</option><option>TSRMT 9</option><option>TSRMT 10</option><option>TSRMT 11</option><option>TSRMT 12</option></select></div>
+                    <div class="form-group"><label>IC</label><input type="text" id="l-ic" placeholder="XXXXXX-XX-XXXX" required></div>
+                    <div class="form-group"><label>NAMA PENUH</label><input type="text" id="l-nama" style="text-transform: uppercase;" placeholder="SILA TAIP HURUF BESAR" required></div>
+                    <div class="form-group"><label>NO TELEFON</label><input type="text" id="l-tel" pattern="[0-9]{3}-[0-9]{7,8}" title="Contoh: 012-3456789" placeholder="XXX-XXXXXXXX" required></div>
+                </div>
+                <div class="form-section">
+                    <h3 class="section-title">MODAL & IMBUHAN</h3>
+                    <div class="form-group"><label>MODAL</label><select id="l-modal" onchange="calcImbuhan('l')" required><option value="" disabled selected>Pilih Modal</option><option value="30">RM 30</option><option value="40">RM 40</option><option value="50">RM 50</option><option value="60">RM 60</option><option value="70">RM 70</option><option value="80">RM 80</option><option value="90">RM 90</option><option value="100">RM 100</option><option value="150">RM 150</option><option value="200">RM 200</option><option value="250">RM 250</option><option value="300">RM 300</option><option value="350">RM 350</option><option value="400">RM 400</option><option value="450">RM 450</option><option value="500">RM 500</option></select></div>
+                    <div class="imbuhan-box"><div class="imbuhan-label">IMBUHAN ANDA</div><div class="imbuhan-value" id="l-imbuhan">RM 0.00</div></div>
+                </div>
+                <div class="form-section">
+                    <h3 class="section-title">UPLOAD RESIT</h3>
+                    <div class="form-group"><input type="file" id="l-resit" accept="image/*" required></div>
+                </div>
+                <button type="submit" class="btn" onclick="playClick()">HANTAR</button>
+                <button type="button" class="btn btn-back" onclick="playClick(); showPage('select')">KEMBALI</button>
+            </form>
+        </div>
+
+                <div id="page-baru" class="page">
+            <img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" alt="Logo" class="logo" style="width: 80px;">
+            <h2 class="title" style="font-size: 1.2rem;">PENDAFTARAN PLAN FINAL TSRMT (RBO) 2026<br><span style="font-size:1rem; color:#fff;">- AHLI BARU -</span></h2>
+            <form id="formBaru" onsubmit="return submitForm('BARU')" style="width: 100%;">
+                <div class="form-section">
+                    <h3 class="section-title">MAKLUMAT AHLI</h3>
+                    <div class="form-group"><label>GROUP</label><select id="b-group" required><option value="" disabled selected>Pilih Group</option><option>TSRMT 1</option><option>TSRMT 2</option><option>TSRMT 3</option><option>TSRMT 4</option><option>TSRMT 5</option><option>TSRMT 6</option><option>TSRMT 7</option><option>TSRMT 8</option><option>TSRMT 9</option><option>TSRMT 10</option><option>TSRMT 11</option><option>TSRMT 12</option></select></div>
+                    <div class="form-group"><label>IC</label><input type="text" id="b-ic" placeholder="XXXXXX-XX-XXXX" required></div>
+                    <div class="form-group"><label>NAMA PENUH</label><input type="text" id="b-nama" style="text-transform: uppercase;" placeholder="SILA TAIP HURUF BESAR" required></div>
+                    <div class="form-group"><label>NO TELEFON</label><input type="text" id="b-tel" pattern="[0-9]{3}-[0-9]{7,8}" title="Contoh: 012-3456789" placeholder="XXX-XXXXXXXX" required></div>
+                </div>
+                <div class="form-section">
+                    <h3 class="section-title">MAKLUMAT PERBANKAN</h3>
+                    <div class="form-group"><label>EMEL</label><input type="email" id="b-email" placeholder="contoh@email.com" required></div>
+                    <div class="form-group"><label>NAMA BANK</label><select id="b-bank" required><option value="" disabled selected>Pilih Bank</option><option>MAYBANK</option><option>CIMB</option><option>BANK ISLAM</option><option>BANK RAKYAT</option><option>RHB</option><option>HONG LEONG</option><option>AMBANK</option><option>PUBLIC BANK</option><option>BSN</option><option>GX BANK</option></select></div>
+                    <div class="form-group"><label>NO AKAUN BANK</label><input type="text" id="b-akaun" oninput="formatAkaun(this)" placeholder="XXXX XXXX XXXX" required></div>
+                    <div class="form-group"><label>ALAMAT TERKINI</label><textarea id="b-alamat" rows="3" style="text-transform: uppercase;" placeholder="SILA TAIP HURUF BESAR" required></textarea></div>
+                </div>
+                <div class="form-section">
+                    <h3 class="section-title">MODAL & IMBUHAN</h3>
+                    <div class="form-group"><label>MODAL</label><select id="b-modal" onchange="calcImbuhan('b')" required><option value="" disabled selected>Pilih Modal</option><option value="30">RM 30</option><option value="40">RM 40</option><option value="50">RM 50</option><option value="60">RM 60</option><option value="70">RM 70</option><option value="80">RM 80</option><option value="90">RM 90</option><option value="100">RM 100</option><option value="150">RM 150</option><option value="200">RM 200</option><option value="250">RM 250</option><option value="300">RM 300</option><option value="350">RM 350</option><option value="400">RM 400</option><option value="450">RM 450</option><option value="500">RM 500</option></select></div>
+                    <div class="imbuhan-box"><div class="imbuhan-label">IMBUHAN ANDA</div><div class="imbuhan-value" id="b-imbuhan">RM 0.00</div></div>
+                </div>
+                <div class="form-section">
+                    <h3 class="section-title">MAKLUMAT WARIS</h3>
+                    <div class="form-group"><label>IC WARIS</label><input type="text" id="b-icWaris" placeholder="XXXXXX-XX-XXXX" required></div>
+                    <div class="form-group"><label>NAMA WARIS</label><input type="text" id="b-namaWaris" style="text-transform: uppercase;" placeholder="SILA TAIP HURUF BESAR" required></div>
+                    <div class="form-group"><label>NO TELEFON WARIS</label><input type="text" id="b-telWaris" pattern="[0-9]{3}-[0-9]{7,8}" title="Contoh: 012-3456789" placeholder="XXX-XXXXXXXX" required></div>
+                    <div class="form-group"><label>ALAMAT WARIS</label><textarea id="b-alamatWaris" rows="3" style="text-transform: uppercase;" placeholder="SILA TAIP HURUF BESAR" required></textarea></div>
+                    <div class="form-group"><label>HUBUNGAN</label><select id="b-hubungan" required><option value="" disabled selected>Pilih Hubungan</option><option>AYAH</option><option>IBU</option><option>SUAMI/ISTERI</option><option>ANAK</option><option>ABANG/KAKAK</option><option>ADIK</option><option>PAK CIK</option><option>MAK CIK</option><option>NENEK</option><option>ATUK</option><option>SEPUPU</option></select></div>
+                </div>
+                <div class="form-section">
+                    <h3 class="section-title">UPLOAD RESIT</h3>
+                    <div class="form-group"><input type="file" id="b-resit" accept="image/*" required></div>
+                </div>
+                <button type="submit" class="btn" onclick="playClick()">HANTAR</button>
+                <button type="button" class="btn btn-back" onclick="playClick(); showPage('select')">KEMBALI</button>
+            </form>
+        </div>
+
+        <div id="page-receipt" class="page">
+            <h2 class="title" style="font-size: 1.5rem; margin-bottom:10px;">PENDAFTARAN BERJAYA!</h2>
+            <p style="color: #aaa; margin-bottom: 20px; text-align: center;">Sila semak butiran di bawah. Klik butang untuk muat turun PDF.</p>
+            <div id="receipt-content" class="receipt-container"></div>
+            <button class="btn btn-pdf" onclick="playClick(); downloadPDF()" style="margin-top: 20px;">📥 MUAT TURUN PDF</button>
+            <button class="btn btn-back" onclick="playClick(); location.reload();" style="max-width: 200px; font-size: 1rem; margin-top:10px;">KEMBALI KE BUTTON MULA</button>
+        </div>
+    </div>
+
+    <div id="loading" class="loading-overlay"><div class="spinner"></div><div style="color: var(--gold);">Memproses Data...</div></div>
+
+
+
+        <script>
+        function playClick() { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime); gain.gain.setValueAtTime(0.5, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1); }
+        
+        window.onload = function() { const animBox = document.getElementById('homeAnimationBox'); for(let i=1;i<=6;i++){let b=document.createElement('div');b.className='butterfly';b.innerHTML='🦋';b.style.left=Math.random()*50+'%';b.style.bottom='-50px';b.style.animationDelay=Math.random()*10+'s';animBox.appendChild(b);} for(let i=1;i<=25;i++){let s=document.createElement('div');s.className='sparkle';s.style.top=Math.random()*100+'%';s.style.left=Math.random()*100+'%';s.style.animationDelay=Math.random()*3+'s';animBox.appendChild(s);} };
+        
+        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page')); document.getElementById(`page-${id}`).classList.add('active-page'); window.scrollTo(0, 0); }
+        
+        function calcImbuhan(p) { let v = parseInt(document.getElementById(`${p}-modal`).value); if(isNaN(v)){document.getElementById(`${p}-imbuhan`).innerText="RM 0.00";return;} document.getElementById(`${p}-imbuhan`).innerText = "RM " + (v*100000).toLocaleString('ms-MY',{minimumFractionDigits:2}); }
+
+        // FUNCTION KECILKAN GAMBAR
+        function resizeImage(file, maxWidth, quality) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > maxWidth) {
+                            height = (maxWidth / width) * height;
+                            width = maxWidth;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', quality)); 
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // FUNCTION AUTO-FORMAT NO AKAUN BANK (4-4-4)
+        function formatAkaun(input) {
+            let value = input.value.replace(/\D/g, ''); 
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            input.value = formattedValue;
+        }
+
+        let currentReceiptData = {};
+
+        // FUNCTION HANTAR BORANG (DAH GABUNG VALIDASI TELEFON)
+        async function submitForm(type) {
+            event.preventDefault();
+            let prefix = type === 'LAMA' ? 'l' : 'b';
+            
+            // VALIDASI KETAT NO TELEFON (MESTI ADA DASH)
+            let phoneRegex = /^\d{3}-\d{7,8}$/;
+            let telAhli = document.getElementById(`${prefix}-tel`).value;
+            if (!phoneRegex.test(telAhli)) {
+                alert("SILA MASUKKAN NO TELEFON DENGAN FORMAT YANG BETUL!\nContoh: 012-3456789");
+                return false; 
+            }
+
+            if (type === 'BARU') {
+                let telWaris = document.getElementById('b-telWaris').value;
+                if (!phoneRegex.test(telWaris)) {
+                    alert("SILA MASUKKAN NO TELEFON WARIS DENGAN FORMAT YANG BETUL!\nContoh: 012-3456789");
+                    return false; 
+                }
+            }
+
+            document.getElementById('loading').style.display = 'flex';
+            let refCount = localStorage.getItem('tsrmt_ref_count') || 0; refCount = parseInt(refCount) + 1; localStorage.setItem('tsrmt_ref_count', refCount);
+            let refNo = `TSRMT-${String(refCount).padStart(4, '0')}RCP-PFTRBO`;
+
+            let fileInput = document.getElementById(`${prefix}-resit`).files[0]; 
+            let base64Resit = ""; 
+            let resitFileName = "";
+            
+            if(fileInput) { 
+                base64Resit = await resizeImage(fileInput, 800, 0.7); 
+                resitFileName = `Resit_${refNo}.jpg`; 
+            }
+
+            let formData = { type, group: document.getElementById(`${prefix}-group`).value, ic: document.getElementById(`${prefix}-ic`).value, nama: document.getElementById(`${prefix}-nama`).value.toUpperCase(), tel: document.getElementById(`${prefix}-tel`).value, modal: "RM " + document.getElementById(`${prefix}-modal`).value, imbuhan: document.getElementById(`${prefix}-imbuhan`).innerText, refNo, timestamp: new Date().toLocaleString('ms-MY'), base64Resit, resitFileName, email: "", bank: "", akaun: "", alamat: "", icWaris: "", namaWaris: "", telWaris: "", alamatWaris: "", hubungan: "" };
+            
+            if(type === 'BARU') { 
+                formData.email=document.getElementById(`b-email`).value; 
+                formData.bank=document.getElementById(`b-bank`).value; 
+                formData.akaun=document.getElementById(`b-akaun`).value; 
+                formData.alamat=document.getElementById(`b-alamat`).value.toUpperCase(); 
+                formData.icWaris=document.getElementById(`b-icWaris`).value; 
+                formData.namaWaris=document.getElementById(`b-namaWaris`).value.toUpperCase(); 
+                formData.telWaris=document.getElementById(`b-telWaris`).value; 
+                formData.alamatWaris=document.getElementById(`b-alamatWaris`).value.toUpperCase(); 
+                formData.hubungan=document.getElementById(`b-hubungan`).value; 
+            }
+
+        
+
+try { const url = "https://script.google.com/macros/s/AKfycbwuOHDmxaDeZCF4I-1ZjHY6UH0BDxV7cISdlEuT1kbL42Y_tMfUHgSSE2jSKJy5_jA/exec "; await fetch(url, { method: 'POST', body: JSON.stringify(formData) }); } catch (e) { console.error("Error", e); }
+            
+            currentReceiptData = formData;
+            renderReceipt(formData);
+            document.getElementById('loading').style.display = 'none';
+            showPage('receipt');
+            return false;
+        }
+
+        // FUNCTION RESIT
+        function renderReceipt(data) {
+            let resitImgHtml = data.base64Resit ? `<img id="resit-img" src="${data.base64Resit}" alt="Resit Upload">` : '';
+            
+            document.getElementById('receipt-content').innerHTML = `
+                <div class="receipt-header">
+                    <img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" style="width: 70px; display: inline-block; margin-bottom: 10px;">
+                    <h2 style="font-family: 'Cinzel', serif; color: #D4AF37; font-size: 1.1rem; margin:0;">PLAN FINAL TSRMT(RBO)2026</h2>
+                </div>
+                <div class="receipt-success">SUCCESSFUL</div>
+                <p style="text-align:center; margin-bottom:20px; color:#aaa; font-size:0.8rem;">Terima Kasih. Sila rujuk butiran di bawah.</p>
+                
+                <h3 style="font-size:0.9rem; color:#D4AF37; border-bottom:1px solid #333; padding-bottom:5px; margin-bottom:10px; text-transform:uppercase;">Transaction Summary</h3>
+                <table class="receipt-table">
+                    <tr style="background:#111;"><td>Reference No</td><td style="color:#D4AF37; font-weight:bold;">${data.refNo}</td></tr>
+                    <tr><td>When</td><td>${data.timestamp}</td></tr>
+                    <tr style="background:#111;"><td>IC</td><td>${data.ic}</td></tr>
+                    <tr><td>Nama</td><td>${data.nama}</td></tr>
+                    <tr style="background:#111;"><td>Modal</td><td style="color:#dc3545; font-weight:bold;">${data.modal}</td></tr>
+                    <tr><td>Imbuhan</td><td style="color:#D4AF37; font-weight:bold;">${data.imbuhan}</td></tr>
+                </table>
+
+                <h3 style="font-size:0.9rem; color:#D4AF37; border-bottom:1px solid #333; padding-bottom:5px; margin:15px 0 10px 0; text-transform:uppercase;">Lampiran Resit</h3>
+                ${resitImgHtml}
+
+                <div class="receipt-note">NOTE: This receipt is computer generated and no signature is required.</div>
+            `;
+        }
+
+        // FUNCTION PDF (1 HALAMAN PENUH)
+        function downloadPDF() {
+            playClick();
+            const element = document.getElementById('receipt-content');
+            
+            html2canvas(element, { 
+                scale: 2, 
+                useCORS: true, 
+                backgroundColor: '#000000', 
+                logging: false 
+            }).then(canvas => {
+                const { jsPDF } = window.jspdf; 
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                
+                const pdfWidth = 210; 
+                const pdfHeight = 297; 
+                const margin = 5; 
+                
+                const usableWidth = pdfWidth - (margin * 2);
+                const usableHeight = pdfHeight - (margin * 2);
+                
+                const imgWidth = usableWidth;
+                const imgHeight = (canvas.height * usableWidth) / canvas.width;
+                
+                let finalWidth, finalHeight, posX, posY;
+                
+                if (imgHeight > usableHeight) {
+                    finalHeight = usableHeight;
+                    finalWidth = (canvas.width * usableHeight) / canvas.height;
+                    posX = margin + ((usableWidth - finalWidth) / 2);
+                    posY = margin;
+                } else {
+                    finalWidth = imgWidth;
+                    finalHeight = imgHeight;
+                    posX = margin;
+                    posY = margin;
+                }
+                
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.addImage(imgData, 'JPEG', posX, posY, finalWidth, finalHeight);
+                pdf.save(`Resit_${currentReceiptData.refNo}.pdf`);
+                
+            }).catch(err => {
+                console.error("Gagal jana PDF:", err);
+                alert("PDF gagal dijana. Sila buat screenshot skrin ini sebagai simpanan.");
+            });
+        }
+
+
+    </script>
+</body>
+</html>
