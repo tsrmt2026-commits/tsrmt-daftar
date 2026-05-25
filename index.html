@@ -267,60 +267,51 @@
             `;
         }
 
-                // FUNCTION SIMPAN SEBAGAI GAMBAR (MESRA TELEFON)
-        function downloadAsImage() {
+                   // FUNCTION SIMPAN RESIT (GUNA WEB SHARE API - 100% BOLEH SIMPAN DI TELEFON)
+        async function downloadAsImage() {
             playClick();
             const element = document.getElementById('receipt-content');
             
-            html2canvas(element, { 
-                scale: 2, 
-                useCORS: true, 
-                allowTaint: true, // Tambah ni supaya logo luar boleh render
-                backgroundColor: '#000000', 
-                logging: false 
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/jpeg', 0.9);
-                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            try {
+                const canvas = await html2canvas(element, { 
+                    scale: 2, 
+                    useCORS: true, 
+                    allowTaint: true,
+                    backgroundColor: '#000000'
+                });
                 
-                if (isMobile) {
-                    // KALAU TELEFON: Buka gambar dalam tab baru supaya senang nak Save
-                    const newWindow = window.open("");
-                    if (newWindow) {
-                        newWindow.document.write(`<html><head><title>Resit TSRMT</title></head><body style="margin:0; background:#000;"><img src="${imgData}" style="max-width:100%; height:auto;"></body></html>`);
-                        alert("Gambar Resit telah dibuka di tab baru.\n\nTekan lama (long press) pada gambar tersebut dan pilih 'Save Image' untuk simpan.");
-                    } else {
-                        alert("Pop-up disekat. Sila benarkan pop-up untuk laman ini, atau buat screenshot skrin ini.");
+                // Tukar canvas ke format File (gambar)
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
+                const file = new File([blob], `Resit_${currentReceiptData.refNo}.jpg`, { type: 'image/jpeg' });
+
+                // Kalau telefon support Web Share API (Android/iOS moden)
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            title: 'Resit TSRMT',
+                            text: 'Ini adalah resit pendaftaran anda.',
+                            files: [file]
+                        });
+                        return; // Dah siap, takyah buat apa2 lagi
+                    } catch (shareError) {
+                        // Boleh jadi user cancel share, atau tak support
+                        console.log("Share dibatalkan atau tak support, fallback ke download biasa.");
                     }
-                } else {
-                    // KALAU KOMPUTER: Download terus macam biasa
-                    const link = document.createElement('a');
-                    link.download = `Resit_${currentReceiptData.refNo}.jpg`;
-                    link.href = imgData;
-                    link.click();
                 }
-            }).catch(err => {
-                console.error("Gagal simpan gambar:", err);
-                alert("Gagal simpan gambar. Sila buat screenshot skrin ini sebagai simpanan.");
-            });
-        }
+                
+                // Fallback (Jika buka di komputer, atau telefon tak support Share)
+                const imgData = canvas.toDataURL('image/jpeg', 0.9);
+                const link = document.createElement('a');
+                link.download = `Resit_${currentReceiptData.refNo}.jpg`;
+                link.href = imgData;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
 
-        // FUNCTION HANTAR KE WHATSAPP
-        function sendToWhatsApp() {
-            playClick();
-            
-            let waText = `*RESIT PENDAFTARAN PLAN FINAL TSRMT(RBO)2026*\n\n`;
-            waText += `*Reference No:* ${currentReceiptData.refNo}\n`;
-            waText += `*Nama:* ${currentReceiptData.nama}\n`;
-            waText += `*IC:* ${currentReceiptData.ic}\n`;
-            waText += `*Modal:* ${currentReceiptData.modal}\n`;
-            waText += `*Imbuhan:* ${currentReceiptData.imbuhan}\n\n`;
-            waText += `Terima kasih kerana mendaftar! 🦋✨`;
-
-            let waPhone = currentReceiptData.tel.replace(/-/g, ''); 
-            if (waPhone.startsWith('0')) { waPhone = '6' + waPhone; }
-
-            const waLink = `https://wa.me/${waPhone}?text=${encodeURIComponent(waText)}`;
-            window.open(waLink, '_blank');
+            } catch (err) {
+                console.error("Gagal jana gambar:", err);
+                alert("Gagal simpan automatik. SILA BUAT SCREENSHOT skrin ini sebagai simpanan anda.");
+            }
         }
     </script>
 </body>
