@@ -6,7 +6,7 @@
     <title>Pendaftaran Plan Final TSRMT</title>
     <meta property="og:title" content="DAFTAR FINAL TSRMT(RBO)2026">
     <meta property="og:description" content="Pendaftaran Ahli Plan Final TSRMT(RBO)2026. Klik untuk mendaftar sekarang.">
-    <meta property="og:image" content="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png">
+    <meta property="og:image" content="Untitled-design-1-removebg-preview.png">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -58,12 +58,12 @@
 <body>
 
     <div class="container">
-        <div id="home-page" class="page active-page"><div class="home-container" id="homeAnimationBox"><div class="premium-box"><img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" crossorigin="anonymous" alt="Logo" class="logo" style="width: 140px;"><h1 class="title glow-title" style="font-size: 2rem;">PENDAFTARAN PLAN FINAL<br>TSRMT(RBO)2026</h1><div style="height: 2px; width: 50%; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 20px auto;"></div><button class="btn btn-start" onclick="playClick(); showPage('select')">MULA</button></div></div></div>
+        <div id="home-page" class="page active-page"><div class="home-container" id="homeAnimationBox"><div class="premium-box"><img src="Untitled-design-1-removebg-preview.png" alt="Logo" class="logo" style="width: 140px;"><h1 class="title glow-title" style="font-size: 2rem;">PENDAFTARAN PLAN FINAL<br>TSRMT(RBO)2026</h1><div style="height: 2px; width: 50%; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 20px auto;"></div><button class="btn btn-start" onclick="playClick(); showPage('select')">MULA</button></div></div></div>
 
-        <div id="page-select" class="page" style="justify-content: center; min-height: 90vh;"><img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" crossorigin="anonymous" alt="Logo" class="logo"><h2 class="title" style="font-size: 1.5rem;">SILA BUAT PILIHAN</h2><button class="btn" onclick="playClick(); showPage('lama')">AHLI LAMA</button><button class="btn" onclick="playClick(); showPage('baru')" style="background: linear-gradient(to right, #333, #111); color: var(--gold); border: 2px solid var(--gold);">AHLI BARU</button><div class="note-box"><div class="note-text"><strong>AHLI LAMA</strong> - Ahli yang pernah beli plan di TSRMT sebelum ini.<br><br><strong>AHLI BARU</strong> - Ahli yang tidak pernah langsung beli plan di TSRMT sebelum ini.</div></div><button class="btn btn-back" onclick="playClick(); showPage('home')" style="max-width: 200px; font-size: 1rem;">KEMBALI</button></div>
+        <div id="page-select" class="page" style="justify-content: center; min-height: 90vh;"><img src="Untitled-design-1-removebg-preview.png" alt="Logo" class="logo"><h2 class="title" style="font-size: 1.5rem;">SILA BUAT PILIHAN</h2><button class="btn" onclick="playClick(); showPage('lama')">AHLI LAMA</button><button class="btn" onclick="playClick(); showPage('baru')" style="background: linear-gradient(to right, #333, #111); color: var(--gold); border: 2px solid var(--gold);">AHLI BARU</button><div class="note-box"><div class="note-text"><strong>AHLI LAMA</strong> - Ahli yang pernah beli plan di TSRMT sebelum ini.<br><br><strong>AHLI BARU</strong> - Ahli yang tidak pernah langsung beli plan di TSRMT sebelum ini.</div></div><button class="btn btn-back" onclick="playClick(); showPage('home')" style="max-width: 200px; font-size: 1rem;">KEMBALI</button></div>
 
         <div id="page-lama" class="page">
-            <img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" crossorigin="anonymous" alt="Logo" class="logo" style="width: 80px;">
+            <img src="Untitled-design-1-removebg-preview.png" alt="Logo" class="logo" style="width: 80px;">
             <h2 class="title" style="font-size: 1.2rem;">PENDAFTARAN PLAN FINAL TSRMT (RBO) 2026<br><span style="font-size:1rem; color:#fff;">- AHLI LAMA -</span></h2>
             <form id="formLama" onsubmit="return submitForm('LAMA')" style="width: 100%;">
                 <div class="form-section">
@@ -88,7 +88,7 @@
         </div>
 
         <div id="page-baru" class="page">
-            <img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" crossorigin="anonymous" alt="Logo" class="logo" style="width: 80px;">
+            <img src="Untitled-design-1-removebg-preview.png" alt="Logo" class="logo" style="width: 80px;">
             <h2 class="title" style="font-size: 1.2rem;">PENDAFTARAN PLAN FINAL TSRMT (RBO) 2026<br><span style="font-size:1rem; color:#fff;">- AHLI BARU -</span></h2>
             <form id="formBaru" onsubmit="return submitForm('BARU')" style="width: 100%;">
                 <div class="form-section">
@@ -139,7 +139,7 @@
 
     <div id="loading" class="loading-overlay">
         <div class="spinner"></div>
-        <div style="color: var(--gold);">Memproses Data...</div>
+        <div id="loading-text" style="color: var(--gold);">Memproses Data...</div>
     </div>
 
     <script>
@@ -192,6 +192,7 @@
             }
 
             document.getElementById('loading').style.display = 'flex';
+            document.getElementById('loading-text').innerText = "Memproses Data...";
             let refCount = localStorage.getItem('tsrmt_ref_count') || 0; refCount = parseInt(refCount) + 1; localStorage.setItem('tsrmt_ref_count', refCount);
             let refNo = `TSRMT-${String(refCount).padStart(4, '0')}RCP-PFTRBO`;
 
@@ -218,7 +219,7 @@
             let resitImgHtml = data.base64Resit ? `<img id="resit-img" src="${data.base64Resit}" alt="Resit Upload">` : '';
             document.getElementById('receipt-content').innerHTML = `
                 <div class="receipt-header">
-                    <img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" crossorigin="anonymous" style="width: 70px; display: inline-block; margin-bottom: 10px;">
+                    <img src="Untitled-design-1-removebg-preview.png" style="width: 70px; display: inline-block; margin-bottom: 10px;">
                     <h2 style="font-family: 'Cinzel', serif; color: #D4AF37; font-size: 1.1rem; margin:0;">PLAN FINAL TSRMT(RBO)2026</h2>
                 </div>
                 <div class="receipt-success">SUCCESSFUL</div>
@@ -244,7 +245,12 @@
         async function downloadAsImage() {
             playClick();
             const element = document.getElementById('receipt-content');
+            const loadingText = document.getElementById('loading-text');
             
+            // MUNCULKAN LOADING SCREEN
+            document.getElementById('loading').style.display = 'flex';
+            loadingText.innerText = "Menjana Resit...";
+
             try {
                 const canvas = await html2canvas(element, { 
                     scale: 2, 
@@ -253,10 +259,13 @@
                     backgroundColor: '#000000'
                 });
                 
-                canvas.toBlob(async function(blob) {
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+                if (isMobile) {
+                    // KHAS UNTUK TELEFON: GUNA WEB SHARE API
+                    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
                     const file = new File([blob], `Resit_${currentReceiptData.refNo}.jpg`, { type: 'image/jpeg' });
-                    
-                    // UNTUK TELEFON (MENGGUNAKAN WEB SHARE API - JAMINAN BOLEH SAVE)
+
                     if (navigator.share && navigator.canShare && navigator.canShare({files: [file]})) {
                         try {
                             await navigator.share({
@@ -264,34 +273,47 @@
                                 title: 'Resit TSRMT',
                                 text: 'Resit Pendaftaran TSRMT'
                             });
-                            return;
                         } catch (err) {
                             if (err.name !== 'AbortError') {
                                 openImageInNewTab(canvas);
                             }
                         }
                     } else {
-                        // UNTUK KOMPUTER (DOWNLOAD TERUS)
-                        const link = document.createElement('a');
-                        link.download = `Resit_${currentReceiptData.refNo}.jpg`;
-                        link.href = canvas.toDataURL('image/jpeg', 0.9);
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
+                        // FALLBACK KALAU TAKDE WEB SHARE API
+                        openImageInNewTab(canvas);
                     }
-                }, 'image/jpeg', 0.9);
+                } else {
+                    // KHAS UNTUK KOMPUTER: DOWNLOAD TERUS
+                    const link = document.createElement('a');
+                    link.download = `Resit_${currentReceiptData.refNo}.jpg`;
+                    link.href = canvas.toDataURL('image/jpeg', 0.9);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
             } catch (err) {
-                console.error("Error generating image:", err);
+                console.error("Gagal jana resit:", err);
                 alert("Gagal menjana gambar. Sila buat screenshot skrin ini sebagai simpanan.");
+            } finally {
+                // TUTUP LOADING SCREEN
+                document.getElementById('loading').style.display = 'none';
+                loadingText.innerText = "Memproses Data...";
             }
         }
 
         function openImageInNewTab(canvas) {
             const imgData = canvas.toDataURL('image/jpeg', 0.9);
-            const newWindow = window.open("");
-            if(newWindow) {
-                newWindow.document.write(`<html><head><title>Resit TSRMT</title></head><body style="margin:0; background:#000; display:flex; justify-content:center; align-items:center; min-height:100vh;"><img src="${imgData}" style="max-width:100%; height:auto;"></body></html>`);
-                alert("Gambar telah dibuka di tab baru.\nSila tekan lama (long press) pada gambar dan pilih 'Save Image' / 'Muat Turun Gambar'.");
+            const newTab = window.open();
+            if (newTab) {
+                newTab.document.write(`
+                    <html>
+                    <head><title>Resit TSRMT</title></head>
+                    <body style="margin:0; background:#000; display:flex; justify-content:center; align-items:center; min-height:100vh;">
+                        <img src="${imgData}" style="max-width:100%; height:auto;">
+                    </body>
+                    </html>
+                `);
+                alert("Resit telah dibuka di tab baru.\nSila tekan lama (long press) pada gambar dan pilih 'Save Image' / 'Muat Turun Gambar' untuk simpan.");
             } else {
                 alert("Sila benarkan pop-up, atau buat screenshot skrin ini.");
             }
