@@ -300,12 +300,16 @@ try { const url = "https://script.google.com/macros/s/AKfycbwuOHDmxaDeZCF4I-1ZjH
         }
 
         // FUNCTION PDF (1 HALAMAN PENUH)
+                // FUNCTION PDF (Dioptimakan untuk Telefon Bimbit)
         function downloadPDF() {
             playClick();
             const element = document.getElementById('receipt-content');
             
+            // Semak jika user buka dari telefon atau komputer
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
             html2canvas(element, { 
-                scale: 2, 
+                scale: isMobile ? 1 : 2, // Kalau telefon, guna scale 1 (ringan). Komputer scale 2 (tajam).
                 useCORS: true, 
                 backgroundColor: '#000000', 
                 logging: false 
@@ -339,14 +343,26 @@ try { const url = "https://script.google.com/macros/s/AKfycbwuOHDmxaDeZCF4I-1ZjH
                 
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 pdf.addImage(imgData, 'JPEG', posX, posY, finalWidth, finalHeight);
-                pdf.save(`Resit_${currentReceiptData.refNo}.pdf`);
+                
+                if (isMobile) {
+                    // KALAU TELEFON: Buka PDF dalam tab/browser baru. 
+                    // User boleh "Share" atau "Save" secara manual dari situ.
+                    const pdfBlob = pdf.output('blob');
+                    const blobUrl = URL.createObjectURL(pdfBlob);
+                    window.open(blobUrl, '_blank');
+                    
+                    // Bagitahu user apa yang kena buat
+                    alert("PDF telah dibuka di tab baru. Sila tekan butang 'Share' atau 'Save' di browser telefon anda untuk menyimpannya.");
+                } else {
+                    // KALAU KOMPUTER: Download terus macam biasa
+                    pdf.save(`Resit_${currentReceiptData.refNo}.pdf`);
+                }
                 
             }).catch(err => {
                 console.error("Gagal jana PDF:", err);
-                alert("PDF gagal dijana. Sila buat screenshot skrin ini sebagai simpanan.");
+                alert("PDF gagal dijana disebabkan had memori telefon. Sila buat screenshot skrin ini sebagai simpanan.");
             });
         }
-
 
     </script>
 </body>
