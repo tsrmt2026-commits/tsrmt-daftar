@@ -148,12 +148,16 @@
             </form>
         </div>
 
-        <div id="page-receipt" class="page">
+                <div id="page-receipt" class="page">
             <h2 class="title" style="font-size: 1.5rem; margin-bottom:10px;">PENDAFTARAN BERJAYA!</h2>
-            <p style="color: #aaa; margin-bottom: 20px; text-align: center;">Sila semak butiran di bawah. Klik butang untuk muat turun PDF.</p>
+            <p style="color: #aaa; margin-bottom: 20px; text-align: center;">Sila semak butiran di bawah.</p>
             <div id="receipt-content" class="receipt-container"></div>
-            <button class="btn btn-pdf" onclick="playClick(); downloadPDF()" style="margin-top: 20px;">📥 MUAT TURUN PDF</button>
-            <button class="btn btn-back" onclick="playClick(); location.reload();" style="max-width: 200px; font-size: 1rem; margin-top:10px;">KEMBALI KE BUTTON MULA</button>
+            
+            <!-- BUTANG BARU PENGGANTI PDF -->
+            <button class="btn" onclick="downloadAsImage()" style="margin-top: 20px;">💾 SIMPAN RESIT (GAMBAR)</button>
+            <button class="btn" onclick="sendToWhatsApp()" style="margin-top: 5px; background: linear-gradient(to right, #25D366, #128C7E); color: #fff; border: none;">📱 HANTAR KE WHATSAPP</button>
+            
+            <button class="btn btn-back" onclick="playClick(); location.reload();" style="max-width: 200px; font-size: 1rem; margin-top:15px;">TUTUP</button>
         </div>
     </div>
 
