@@ -267,7 +267,7 @@
             `;
         }
 
-        // FUNCTION SIMPAN SEBAGAI GAMBAR
+                // FUNCTION SIMPAN SEBAGAI GAMBAR (MESRA TELEFON)
         function downloadAsImage() {
             playClick();
             const element = document.getElementById('receipt-content');
@@ -275,16 +275,32 @@
             html2canvas(element, { 
                 scale: 2, 
                 useCORS: true, 
+                allowTaint: true, // Tambah ni supaya logo luar boleh render
                 backgroundColor: '#000000', 
                 logging: false 
             }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Resit_${currentReceiptData.refNo}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.9);
-                link.click();
+                const imgData = canvas.toDataURL('image/jpeg', 0.9);
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                
+                if (isMobile) {
+                    // KALAU TELEFON: Buka gambar dalam tab baru supaya senang nak Save
+                    const newWindow = window.open("");
+                    if (newWindow) {
+                        newWindow.document.write(`<html><head><title>Resit TSRMT</title></head><body style="margin:0; background:#000;"><img src="${imgData}" style="max-width:100%; height:auto;"></body></html>`);
+                        alert("Gambar Resit telah dibuka di tab baru.\n\nTekan lama (long press) pada gambar tersebut dan pilih 'Save Image' untuk simpan.");
+                    } else {
+                        alert("Pop-up disekat. Sila benarkan pop-up untuk laman ini, atau buat screenshot skrin ini.");
+                    }
+                } else {
+                    // KALAU KOMPUTER: Download terus macam biasa
+                    const link = document.createElement('a');
+                    link.download = `Resit_${currentReceiptData.refNo}.jpg`;
+                    link.href = imgData;
+                    link.click();
+                }
             }).catch(err => {
                 console.error("Gagal simpan gambar:", err);
-                alert("Gagal simpan. Sila buat screenshot skrin ini sebagai simpanan.");
+                alert("Gagal simpan gambar. Sila buat screenshot skrin ini sebagai simpanan.");
             });
         }
 
