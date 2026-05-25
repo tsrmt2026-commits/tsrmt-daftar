@@ -299,83 +299,118 @@ try { const url = "https://script.google.com/macros/s/AKfycbwuOHDmxaDeZCF4I-1ZjH
             `;
         }
 
-        // FUNCTION PDF (1 HALAMAN PENUH)
-                       // FUNCTION PDF (VERSI ULTRA-SELAMAT UNTUK TELEFON)
+                // FUNCTION PDF REVOLUSI (Terus bina PDF, tak pakai screenshot. Mesra Telefon 100%)
         function downloadPDF() {
             playClick();
-            const element = document.getElementById('receipt-content');
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            
-            // MUNCULKAN LOADING SUPAYA USER TAK TEKAN BANYAK KALI
             document.getElementById('loading').style.display = 'flex';
             document.querySelector('#loading div:last-child').innerText = "Menjana PDF...";
 
-            html2canvas(element, { 
-                scale: isMobile ? 1 : 2, 
-                useCORS: true, 
-                backgroundColor: '#000000', 
-                logging: false 
-            }).then(canvas => {
-                const { jsPDF } = window.jspdf; 
-                const imgData = canvas.toDataURL('image/jpeg', isMobile ? 0.8 : 0.95);
-                
-                const pdfWidth = 210; 
-                const pdfHeight = 297; 
-                const margin = 5; 
-                
-                const usableWidth = pdfWidth - (margin * 2);
-                const usableHeight = pdfHeight - (margin * 2);
-                
-                const imgWidth = usableWidth;
-                const imgHeight = (canvas.height * usableWidth) / canvas.width;
-                
-                let finalWidth, finalHeight, posX, posY;
-                
-                if (imgHeight > usableHeight) {
-                    finalHeight = usableHeight;
-                    finalWidth = (canvas.width * usableHeight) / canvas.height;
-                    posX = margin + ((usableWidth - finalWidth) / 2);
-                    posY = margin;
-                } else {
-                    finalWidth = imgWidth;
-                    finalHeight = imgHeight;
-                    posX = margin;
-                    posY = margin;
-                }
-                
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                pdf.addImage(imgData, 'JPEG', posX, posY, finalWidth, finalHeight);
-                
-                // TUTUP LOADING
-                document.getElementById('loading').style.display = 'none';
+            // Beri masa 0.5 saat untuk loading screen muncul sebelum proses berat
+            setTimeout(() => {
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    
+                    //Warna
+                    const goldColor = [212, 175, 55];
+                    const whiteColor = [255, 255, 255];
+                    const greenColor = [40, 167, 69];
+                    const redColor = [220, 53, 69];
+                    const greyColor = [170, 170, 170];
+                    const darkGrey = [102, 102, 102];
 
-                if (isMobile) {
-                    // CARA TERBAIK UNTUK TELEFON: Buka PDF dalam iframe di tab baru (Tak kena block)
-                    const pdfDataUri = pdf.output('datauristring');
-                    const newWindow = window.open("");
-                    if (newWindow) {
-                        newWindow.document.write(`
-                            <html>
-                            <head><title>Resit TSRMT</title></head>
-                            <body style="margin:0;padding:0;">
-                                <iframe src="${pdfDataUri}" frameborder="0" style="border:0; width:100%; height:100vh;"></iframe>
-                            </body>
-                            </html>
-                        `);
-                        alert("PDF telah dibuka di tab baru.\n\nSila tekan butang 'Share' (ikon hantar) atau 'Save' di browser telefon anda untuk menyimpannya.");
-                    } else {
-                        alert("Pop-up disekat. Sila benarkan pop-up untuk laman ini, atau buat screenshot skrin ini sebagai simpanan.");
+                    // Latar Belakang Hitam
+                    pdf.setFillColor(0, 0, 0);
+                    pdf.rect(0, 0, 210, 297, 'F');
+
+                    // Tajuk Utama
+                    pdf.setFontSize(14);
+                    pdf.setTextColor(...goldColor);
+                    pdf.setFont("helvetica", "bold");
+                    pdf.text("PLAN FINAL TSRMT(RBO)2026", 105, 25, { align: "center" });
+                    
+                    // Tanda Berjaya
+                    pdf.setFontSize(28);
+                    pdf.setTextColor(...greenColor);
+                    pdf.text("SUCCESSFUL", 105, 45, { align: "center" });
+
+                    // Ayat
+                    pdf.setFontSize(10);
+                    pdf.setTextColor(...greyColor);
+                    pdf.setFont("helvetica", "normal");
+                    pdf.text("Terima Kasih. Sila rujuk butiran di bawah.", 105, 55, { align: "center" });
+
+                    // Garisan Emas
+                    pdf.setDrawColor(...goldColor);
+                    pdf.setLineWidth(0.5);
+                    pdf.line(20, 62, 190, 62);
+
+                    // Data Dalam Bentuk Table
+                    let y = 75;
+                    const addRow = (label, value, isBoldValue = false, valueColor = whiteColor) => {
+                        pdf.setFontSize(11);
+                        pdf.setFont("helvetica", "bold");
+                        pdf.setTextColor(...goldColor);
+                        pdf.text(label, 20, y);
+                        
+                        pdf.setFont("helvetica", isBoldValue ? "bold" : "normal");
+                        pdf.setTextColor(...valueColor);
+                        pdf.text(String(value), 80, y); // String() supaya tak error jika null
+                        y += 12; // Jarak antara baris
+                    };
+
+                    addRow("Reference No", currentReceiptData.refNo, true, goldColor);
+                    addRow("When", currentReceiptData.timestamp);
+                    addRow("IC", currentReceiptData.ic);
+                    addRow("Nama", currentReceiptData.nama);
+                    addRow("Modal", currentReceiptData.modal, true, redColor);
+                    addRow("Imbuhan", currentReceiptData.imbuhan, true, goldColor);
+
+                    // Garisan Kelabu
+                    pdf.setDrawColor(51, 51, 51);
+                    pdf.line(20, y, 190, y);
+                    y += 15;
+
+                    // Tajuk Resit
+                    pdf.setFontSize(11);
+                    pdf.setTextColor(...goldColor);
+                    pdf.setFont("helvetica", "bold");
+                    pdf.text("LAMPIRAN RESIT", 20, y);
+                    y += 10;
+
+                    // Masukkan Gambar Resit Terus (Bypass html2canvas)
+                    if (currentReceiptData.base64Resit) {
+                        try {
+                            // Lebar 170mm, tinggi auto (0)
+                            pdf.addImage(currentReceiptData.base64Resit, 'JPEG', 20, y, 170, 0);
+                        } catch (imgErr) {
+                            console.error("Gagal masukkan gambar:", imgErr);
+                        }
                     }
-                } else {
-                    // KOMPUTER: DOWNLOAD TERUS
+
+                    // Note Bawah
+                    pdf.setFontSize(8);
+                    pdf.setTextColor(...darkGrey);
+                    pdf.setFont("helvetica", "normal");
+                    pdf.text("NOTE: This receipt is computer generated and no signature is required.", 105, 280, { align: "center" });
+
+                    // Muat Turun / Simpan
                     pdf.save(`Resit_${currentReceiptData.refNo}.pdf`);
+                    
+                    document.getElementById('loading').style.display = 'none';
+                    
+                    // Alert mesej untuk pengguna telefon
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    if (isMobile) {
+                        alert("PDF telah dijana!\n\nSila semak folder 'Downloads' di telefon anda, ATAU klik butang Share/Save jika ia terbuka di browser.");
+                    }
+
+                } catch (err) {
+                    document.getElementById('loading').style.display = 'none';
+                    console.error("Gagal jana PDF:", err);
+                    alert("PDF gagal dijana. Sila buat screenshot skrin ini sebagai simpanan.");
                 }
-                
-            }).catch(err => {
-                document.getElementById('loading').style.display = 'none';
-                console.error("Gagal jana PDF:", err);
-                alert("PDF gagal dijana disebabkan had memori telefon. Sila buat screenshot skrin ini sebagai simpanan.");
-            });
+            }, 500);
         }
 
     </script>
