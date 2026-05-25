@@ -1,56 +1,42 @@
 <!DOCTYPE html>
 <html lang="ms">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pendaftaran Plan Final TSRMT</title>
-
     <meta property="og:title" content="DAFTAR FINAL TSRMT(RBO)2026">
     <meta property="og:description" content="Pendaftaran Ahli Plan Final TSRMT(RBO)2026. Klik untuk mendaftar sekarang.">
-    <meta property="og:image" content="Untitled-design-1-removebg-preview.png">
-
+    <meta property="og:image" content="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
     <style>
         :root { --gold: #D4AF37; --gold-light: #F4C430; --black: #0a0a0a; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: var(--black); color: #fff; min-height: 100vh; overflow-x: hidden; }
-
         .container { max-width: 600px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
         .page { display: none; width: 100%; } 
         .active-page { display: flex; flex-direction: column; align-items: center; }
-
         .logo { width: 130px; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(212,175,55,0.5)); }
         .title { font-family: 'Cinzel', serif; color: var(--gold); text-align: center; margin-bottom: 30px; font-size: 1.8rem; text-shadow: 0 0 10px rgba(212,175,55,0.3); line-height: 1.3; }
-        
         .btn { width: 100%; max-width: 400px; padding: 15px; background: linear-gradient(to right, var(--gold), var(--gold-light)); color: var(--black); border: none; border-radius: 8px; font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(212,175,55,0.3); position: relative; z-index: 5; display: block; margin: 0 auto 15px auto; text-align: center; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.5); }
         .btn-back { background: #333 !important; color: var(--gold) !important; border: 1px solid var(--gold) !important; box-shadow: none !important; }
         .btn-start { font-size: 1.5rem; padding: 20px; letter-spacing: 2px; }
-
         .note-box { background: rgba(212, 175, 55, 0.05); border: 1px solid #333; padding: 15px; border-radius: 8px; margin-bottom: 20px; width: 100%; max-width: 400px; }
         .note-text { font-size: 0.85rem; color: #aaa; line-height: 1.5; text-align: left; }
         .note-text strong { color: var(--gold); }
-
         .form-section { background: rgba(20,20,20,0.8); border: 1px solid var(--gold); border-radius: 12px; padding: 20px; margin-bottom: 20px; width: 100%; }
         .section-title { color: var(--gold); border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; font-family: 'Cinzel', serif; text-align: left; }
-
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; color: #aaa; font-size: 0.9rem; }
         input, select, textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #444; color: var(--gold); border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 1rem; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); }
-        
         .imbuhan-box { background: rgba(212, 175, 55, 0.1); padding: 15px; border-radius: 8px; text-align: center; margin-top: 10px; border: 1px dashed var(--gold); }
         .imbuhan-label { font-size: 0.9rem; color: #aaa; }
         .imbuhan-value { font-size: 1.8rem; font-weight: 800; color: #F4C430; font-family: 'Cinzel', serif; }
-
         .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; }
         .spinner { border: 4px solid rgba(212,175,55,0.3); border-radius: 50%; border-top: 4px solid var(--gold); width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         .home-container { position: relative; width: 100%; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 30px; }
         .premium-box { position: relative; z-index: 3; background: rgba(10, 10, 10, 0.95); border: 4px solid var(--gold); outline: 2px solid var(--gold); outline-offset: 6px; border-radius: 20px; padding: 50px 30px; box-shadow: 0 0 60px rgba(212, 175, 55, 0.4); text-align: center; }
         .glow-title { text-shadow: 0 0 20px rgba(212, 175, 55, 0.8); animation: pulse-glow 2s infinite alternate; }
@@ -59,7 +45,6 @@
         @keyframes fly { 0% { transform: translate(0, 0) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.9; } 90% { opacity: 0.9; } 100% { transform: translate(800px, -600px) rotate(360deg) scale(1.2); opacity: 0; } }
         .sparkle { position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%; z-index: 1; animation: blink 2s infinite alternate; box-shadow: 0 0 10px #fff, 0 0 20px var(--gold); pointer-events: none; }
         @keyframes blink { 0% { opacity: 0.2; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.2); } }
-
         .receipt-container { background: #000; color: #fff; padding: 30px; border: 4px double var(--gold); width: 100%; max-width: 500px; margin: 20px auto; font-family: 'Poppins', sans-serif; }
         .receipt-header { text-align: center; border-bottom: 2px solid #D4AF37; padding-bottom: 15px; margin-bottom: 20px; }
         .receipt-success { font-size: 2rem; font-weight: 900; color: #28a745; text-align: center; letter-spacing: 2px; margin: 10px 0; text-shadow: 0 0 10px rgba(40,167,69,0.5); }
@@ -73,12 +58,12 @@
 <body>
 
     <div class="container">
-        <div id="home-page" class="page active-page"><div class="home-container" id="homeAnimationBox"><div class="premium-box"><img src="Untitled-design-1-removebg-preview.png" alt="Logo" class="logo" style="width: 140px;"><h1 class="title glow-title" style="font-size: 2rem;">PENDAFTARAN PLAN FINAL<br>TSRMT(RBO)2026</h1><div style="height: 2px; width: 50%; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 20px auto;"></div><button class="btn btn-start" onclick="playClick(); showPage('select')">MULA</button></div></div></div>
+        <div id="home-page" class="page active-page"><div class="home-container" id="homeAnimationBox"><div class="premium-box"><img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" crossorigin="anonymous" alt="Logo" class="logo" style="width: 140px;"><h1 class="title glow-title" style="font-size: 2rem;">PENDAFTARAN PLAN FINAL<br>TSRMT(RBO)2026</h1><div style="height: 2px; width: 50%; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 20px auto;"></div><button class="btn btn-start" onclick="playClick(); showPage('select')">MULA</button></div></div></div>
 
-        <div id="page-select" class="page" style="justify-content: center; min-height: 90vh;"><img src="Untitled-design-1-removebg-preview.png" alt="Logo" class="logo"><h2 class="title" style="font-size: 1.5rem;">SILA BUAT PILIHAN</h2><button class="btn" onclick="playClick(); showPage('lama')">AHLI LAMA</button><button class="btn" onclick="playClick(); showPage('baru')" style="background: linear-gradient(to right, #333, #111); color: var(--gold); border: 2px solid var(--gold);">AHLI BARU</button><div class="note-box"><div class="note-text"><strong>AHLI LAMA</strong> - Ahli yang pernah beli plan di TSRMT sebelum ini.<br><br><strong>AHLI BARU</strong> - Ahli yang tidak pernah langsung beli plan di TSRMT sebelum ini.</div></div><button class="btn btn-back" onclick="playClick(); showPage('home')" style="max-width: 200px; font-size: 1rem;">KEMBALI</button></div>
+        <div id="page-select" class="page" style="justify-content: center; min-height: 90vh;"><img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" crossorigin="anonymous" alt="Logo" class="logo"><h2 class="title" style="font-size: 1.5rem;">SILA BUAT PILIHAN</h2><button class="btn" onclick="playClick(); showPage('lama')">AHLI LAMA</button><button class="btn" onclick="playClick(); showPage('baru')" style="background: linear-gradient(to right, #333, #111); color: var(--gold); border: 2px solid var(--gold);">AHLI BARU</button><div class="note-box"><div class="note-text"><strong>AHLI LAMA</strong> - Ahli yang pernah beli plan di TSRMT sebelum ini.<br><br><strong>AHLI BARU</strong> - Ahli yang tidak pernah langsung beli plan di TSRMT sebelum ini.</div></div><button class="btn btn-back" onclick="playClick(); showPage('home')" style="max-width: 200px; font-size: 1rem;">KEMBALI</button></div>
 
         <div id="page-lama" class="page">
-            <img src="Untitled-design-1-removebg-preview.png" alt="Logo" class="logo" style="width: 80px;">
+            <img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" crossorigin="anonymous" alt="Logo" class="logo" style="width: 80px;">
             <h2 class="title" style="font-size: 1.2rem;">PENDAFTARAN PLAN FINAL TSRMT (RBO) 2026<br><span style="font-size:1rem; color:#fff;">- AHLI LAMA -</span></h2>
             <form id="formLama" onsubmit="return submitForm('LAMA')" style="width: 100%;">
                 <div class="form-section">
@@ -103,7 +88,7 @@
         </div>
 
         <div id="page-baru" class="page">
-            <img src="Untitled-design-1-removebg-preview.png" alt="Logo" class="logo" style="width: 80px;">
+            <img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" crossorigin="anonymous" alt="Logo" class="logo" style="width: 80px;">
             <h2 class="title" style="font-size: 1.2rem;">PENDAFTARAN PLAN FINAL TSRMT (RBO) 2026<br><span style="font-size:1rem; color:#fff;">- AHLI BARU -</span></h2>
             <form id="formBaru" onsubmit="return submitForm('BARU')" style="width: 100%;">
                 <div class="form-section">
@@ -144,13 +129,10 @@
 
         <div id="page-receipt" class="page">
             <h2 class="title" style="font-size: 1.5rem; margin-bottom:10px;">PENDAFTARAN BERJAYA!</h2>
-            <p style="color: #aaa; margin-bottom: 20px; text-align: center;">Sila semak butiran di bawah.</p>
+            <p style="color: #ffcc00; margin-bottom: 15px; text-align: center; font-weight: bold; font-size: 1rem;">📸 SILA TEKAN BUTANG DI BAWAH UNTUK SIMPAN RESIT 📸</p>
             <div id="receipt-content" class="receipt-container"></div>
             
-            <!-- BUTANG SIMPAN GAMBAR & WHATSAPP -->
             <button class="btn" onclick="downloadAsImage()" style="margin-top: 20px;">💾 SIMPAN RESIT (GAMBAR)</button>
-            <button class="btn" onclick="sendToWhatsApp()" style="margin-top: 5px; background: linear-gradient(to right, #25D366, #128C7E); color: #fff; border: none;">📱 HANTAR KE WHATSAPP</button>
-            
             <button class="btn btn-back" onclick="playClick(); location.reload();" style="max-width: 200px; font-size: 1rem; margin-top:15px;">TUTUP</button>
         </div>
     </div>
@@ -162,11 +144,8 @@
 
     <script>
         function playClick() { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime); gain.gain.setValueAtTime(0.5, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1); }
-        
         window.onload = function() { const animBox = document.getElementById('homeAnimationBox'); for(let i=1;i<=6;i++){let b=document.createElement('div');b.className='butterfly';b.innerHTML='🦋';b.style.left=Math.random()*50+'%';b.style.bottom='-50px';b.style.animationDelay=Math.random()*10+'s';animBox.appendChild(b);} for(let i=1;i<=25;i++){let s=document.createElement('div');s.className='sparkle';s.style.top=Math.random()*100+'%';s.style.left=Math.random()*100+'%';s.style.animationDelay=Math.random()*3+'s';animBox.appendChild(s);} };
-        
         function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page')); document.getElementById(`page-${id}`).classList.add('active-page'); window.scrollTo(0, 0); }
-        
         function calcImbuhan(p) { let v = parseInt(document.getElementById(`${p}-modal`).value); if(isNaN(v)){document.getElementById(`${p}-imbuhan`).innerText="RM 0.00";return;} document.getElementById(`${p}-imbuhan`).innerText = "RM " + (v*100000).toLocaleString('ms-MY',{minimumFractionDigits:2}); }
 
         function resizeImage(file, maxWidth, quality) {
@@ -176,8 +155,7 @@
                     const img = new Image();
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
+                        let width = img.width; let height = img.height;
                         if (width > maxWidth) { height = (maxWidth / width) * height; width = maxWidth; }
                         canvas.width = width; canvas.height = height;
                         const ctx = canvas.getContext('2d');
@@ -205,11 +183,9 @@
         async function submitForm(type) {
             event.preventDefault();
             let prefix = type === 'LAMA' ? 'l' : 'b';
-            
             let phoneRegex = /^\d{3}-\d{7,8}$/;
             let telAhli = document.getElementById(`${prefix}-tel`).value;
             if (!phoneRegex.test(telAhli)) { alert("SILA MASUKKAN NO TELEFON DENGAN FORMAT YANG BETUL!\nContoh: 012-3456789"); return false; }
-
             if (type === 'BARU') {
                 let telWaris = document.getElementById('b-telWaris').value;
                 if (!phoneRegex.test(telWaris)) { alert("SILA MASUKKAN NO TELEFON WARIS DENGAN FORMAT YANG BETUL!\nContoh: 012-3456789"); return false; }
@@ -221,7 +197,6 @@
 
             let fileInput = document.getElementById(`${prefix}-resit`).files[0]; 
             let base64Resit = ""; let resitFileName = "";
-            
             if(fileInput) { base64Resit = await resizeImage(fileInput, 800, 0.7); resitFileName = `Resit_${refNo}.jpg`; }
 
             let formData = { type, group: document.getElementById(`${prefix}-group`).value, ic: document.getElementById(`${prefix}-ic`).value, nama: document.getElementById(`${prefix}-nama`).value.toUpperCase(), tel: document.getElementById(`${prefix}-tel`).value, modal: "RM " + document.getElementById(`${prefix}-modal`).value, imbuhan: document.getElementById(`${prefix}-imbuhan`).innerText, refNo, timestamp: new Date().toLocaleString('ms-MY'), base64Resit, resitFileName, email: "", bank: "", akaun: "", alamat: "", icWaris: "", namaWaris: "", telWaris: "", alamatWaris: "", hubungan: "" };
@@ -241,10 +216,9 @@
 
         function renderReceipt(data) {
             let resitImgHtml = data.base64Resit ? `<img id="resit-img" src="${data.base64Resit}" alt="Resit Upload">` : '';
-            
             document.getElementById('receipt-content').innerHTML = `
                 <div class="receipt-header">
-                    <img src="Untitled-design-1-removebg-preview.png" style="width: 70px; display: inline-block; margin-bottom: 10px;">
+                    <img src="https://i.postimg.cc/K8CPQ20f/Untitled-design-1-removebg-preview.png" crossorigin="anonymous" style="width: 70px; display: inline-block; margin-bottom: 10px;">
                     <h2 style="font-family: 'Cinzel', serif; color: #D4AF37; font-size: 1.1rem; margin:0;">PLAN FINAL TSRMT(RBO)2026</h2>
                 </div>
                 <div class="receipt-success">SUCCESSFUL</div>
@@ -267,7 +241,6 @@
             `;
         }
 
-                   // FUNCTION SIMPAN RESIT (GUNA WEB SHARE API - 100% BOLEH SIMPAN DI TELEFON)
         async function downloadAsImage() {
             playClick();
             const element = document.getElementById('receipt-content');
@@ -276,41 +249,51 @@
                 const canvas = await html2canvas(element, { 
                     scale: 2, 
                     useCORS: true, 
-                    allowTaint: true,
+                    allowTaint: true, 
                     backgroundColor: '#000000'
                 });
                 
-                // Tukar canvas ke format File (gambar)
-                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
-                const file = new File([blob], `Resit_${currentReceiptData.refNo}.jpg`, { type: 'image/jpeg' });
-
-                // Kalau telefon support Web Share API (Android/iOS moden)
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    try {
-                        await navigator.share({
-                            title: 'Resit TSRMT',
-                            text: 'Ini adalah resit pendaftaran anda.',
-                            files: [file]
-                        });
-                        return; // Dah siap, takyah buat apa2 lagi
-                    } catch (shareError) {
-                        // Boleh jadi user cancel share, atau tak support
-                        console.log("Share dibatalkan atau tak support, fallback ke download biasa.");
+                canvas.toBlob(async function(blob) {
+                    const file = new File([blob], `Resit_${currentReceiptData.refNo}.jpg`, { type: 'image/jpeg' });
+                    
+                    // UNTUK TELEFON (MENGGUNAKAN WEB SHARE API - JAMINAN BOLEH SAVE)
+                    if (navigator.share && navigator.canShare && navigator.canShare({files: [file]})) {
+                        try {
+                            await navigator.share({
+                                files: [file],
+                                title: 'Resit TSRMT',
+                                text: 'Resit Pendaftaran TSRMT'
+                            });
+                            return;
+                        } catch (err) {
+                            if (err.name !== 'AbortError') {
+                                openImageInNewTab(canvas);
+                            }
+                        }
+                    } else {
+                        // UNTUK KOMPUTER (DOWNLOAD TERUS)
+                        const link = document.createElement('a');
+                        link.download = `Resit_${currentReceiptData.refNo}.jpg`;
+                        link.href = canvas.toDataURL('image/jpeg', 0.9);
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
                     }
-                }
-                
-                // Fallback (Jika buka di komputer, atau telefon tak support Share)
-                const imgData = canvas.toDataURL('image/jpeg', 0.9);
-                const link = document.createElement('a');
-                link.download = `Resit_${currentReceiptData.refNo}.jpg`;
-                link.href = imgData;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
+                }, 'image/jpeg', 0.9);
             } catch (err) {
-                console.error("Gagal jana gambar:", err);
-                alert("Gagal simpan automatik. SILA BUAT SCREENSHOT skrin ini sebagai simpanan anda.");
+                console.error("Error generating image:", err);
+                alert("Gagal menjana gambar. Sila buat screenshot skrin ini sebagai simpanan.");
+            }
+        }
+
+        function openImageInNewTab(canvas) {
+            const imgData = canvas.toDataURL('image/jpeg', 0.9);
+            const newWindow = window.open("");
+            if(newWindow) {
+                newWindow.document.write(`<html><head><title>Resit TSRMT</title></head><body style="margin:0; background:#000; display:flex; justify-content:center; align-items:center; min-height:100vh;"><img src="${imgData}" style="max-width:100%; height:auto;"></body></html>`);
+                alert("Gambar telah dibuka di tab baru.\nSila tekan lama (long press) pada gambar dan pilih 'Save Image' / 'Muat Turun Gambar'.");
+            } else {
+                alert("Sila benarkan pop-up, atau buat screenshot skrin ini.");
             }
         }
     </script>
