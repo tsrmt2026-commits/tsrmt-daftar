@@ -368,52 +368,118 @@ try { const url = "https://script.google.com/macros/s/AKfycbwuOHDmxaDeZCF4I-1ZjH
                     pdf.text("LAMPIRAN RESIT", 20, y);
                     y += 10;
 
-                    // MASUKKAN GAMBAR DENGAN KIRAAN ASPECT RATIO YANG TEPAT
-                    if (currentReceiptData.base64Resit) {
-                        try {
-                            // Kita load gambar dulu dalam memory untuk dapatkan lebar & tinggi sebenar
+                            // FUNCTION DENGAN SYSTEM TUNGGU GAMBAR (ANTI-ROSAK)
+        async function downloadPDF() {
+            playClick();
+            document.getElementById('loading').style.display = 'flex';
+            document.querySelector('#loading div:last-child').innerText = "Menjana PDF...";
+
+            // Beri masa 0.5 saat untuk loading screen muncul
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const goldColor = [212, 175, 55];
+                const whiteColor = [255, 255, 255];
+                const greenColor = [40, 167, 69];
+                const redColor = [220, 53, 69];
+                const greyColor = [170, 170, 170];
+                const darkGrey = [102, 102, 102];
+
+                pdf.setFillColor(0, 0, 0);
+                pdf.rect(0, 0, 210, 297, 'F');
+
+                pdf.setFontSize(14);
+                pdf.setTextColor(...goldColor);
+                pdf.setFont("helvetica", "bold");
+                pdf.text("PLAN FINAL TSRMT(RBO)2026", 105, 25, { align: "center" });
+                
+                pdf.setFontSize(28);
+                pdf.setTextColor(...greenColor);
+                pdf.text("SUCCESSFUL", 105, 45, { align: "center" });
+
+                pdf.setFontSize(10);
+                pdf.setTextColor(...greyColor);
+                pdf.setFont("helvetica", "normal");
+                pdf.text("Terima Kasih. Sila rujuk butiran di bawah.", 105, 55, { align: "center" });
+
+                pdf.setDrawColor(...goldColor);
+                pdf.setLineWidth(0.5);
+                pdf.line(20, 62, 190, 62);
+
+                let y = 75;
+                const addRow = (label, value, isBoldValue = false, valueColor = whiteColor) => {
+                    pdf.setFontSize(11);
+                    pdf.setFont("helvetica", "bold");
+                    pdf.setTextColor(...goldColor);
+                    pdf.text(label, 20, y);
+                    
+                    pdf.setFont("helvetica", isBoldValue ? "bold" : "normal");
+                    pdf.setTextColor(...valueColor);
+                    pdf.text(String(value), 80, y);
+                    y += 12;
+                };
+
+                addRow("Reference No", currentReceiptData.refNo, true, goldColor);
+                addRow("When", currentReceiptData.timestamp);
+                addRow("IC", currentReceiptData.ic);
+                addRow("Nama", currentReceiptData.nama);
+                addRow("Modal", currentReceiptData.modal, true, redColor);
+                addRow("Imbuhan", currentReceiptData.imbuhan, true, goldColor);
+
+                pdf.setDrawColor(51, 51, 51);
+                pdf.line(20, y, 190, y);
+                y += 15;
+
+                pdf.setFontSize(11);
+                pdf.setTextColor(...goldColor);
+                pdf.setFont("helvetica", "bold");
+                pdf.text("LAMPIRAN RESIT", 20, y);
+                y += 10;
+
+                // SYSTEM TUNGGU GAMBAR SIAP DIUKUR BARU MASUK PDF
+                if (currentReceiptData.base64Resit) {
+                    try {
+                        const imgDimensions = await new Promise((resolve) => {
                             const img = new Image();
+                            img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+                            img.onerror = () => resolve({ w: 800, h: 600 }); // fallback kalau gagal
                             img.src = currentReceiptData.base64Resit;
-                            
-                            const imgWidth = img.naturalWidth || 800; // default 800 kalau tak baca
-                            const imgHeight = img.naturalHeight || 600; // default 600 kalau tak baca
-                            
-                            // Kira ratio gambar
-                            const ratio = imgHeight / imgWidth;
-                            const pdfImgWidth = 170; // Lebar gambar dalam PDF (170mm)
-                            const pdfImgHeight = pdfImgWidth * ratio; // Tinggi gambar ikut ratio
+                        });
 
-                            // Batasan tinggi supaya tak melebihi kertas A4
-                            const maxHeight = 270 - y; // Baki ruang di page tu
-                            const finalHeight = Math.min(pdfImgHeight, maxHeight);
+                        const ratio = imgDimensions.h / imgDimensions.w;
+                        const pdfImgWidth = 170;
+                        const pdfImgHeight = pdfImgWidth * ratio;
+                        const maxHeight = 270 - y;
+                        const finalHeight = Math.min(pdfImgHeight, maxHeight);
 
-                            // Masukkan gambar dengan saiz yang dah dikira tepat
-                            pdf.addImage(currentReceiptData.base64Resit, 'JPEG', 20, y, pdfImgWidth, finalHeight);
-                        } catch (imgErr) {
-                            console.error("Gagal masukkan gambar:", imgErr);
-                        }
+                        pdf.addImage(currentReceiptData.base64Resit, 'JPEG', 20, y, pdfImgWidth, finalHeight);
+                    } catch (imgErr) {
+                        console.error("Gagal masukkan gambar:", imgErr);
                     }
-
-                    pdf.setFontSize(8);
-                    pdf.setTextColor(...darkGrey);
-                    pdf.setFont("helvetica", "normal");
-                    pdf.text("NOTE: This receipt is computer generated and no signature is required.", 105, 280, { align: "center" });
-
-                    pdf.save(`Resit_${currentReceiptData.refNo}.pdf`);
-                    
-                    document.getElementById('loading').style.display = 'none';
-                    
-                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                    if (isMobile) {
-                        alert("PDF telah dijana!\n\nSila semak folder 'Downloads' di telefon anda.");
-                    }
-
-                } catch (err) {
-                    document.getElementById('loading').style.display = 'none';
-                    console.error("Gagal jana PDF:", err);
-                    alert("PDF gagal dijana. Sila buat screenshot skrin ini sebagai simpanan.");
                 }
-            }, 500);
+
+                pdf.setFontSize(8);
+                pdf.setTextColor(...darkGrey);
+                pdf.setFont("helvetica", "normal");
+                pdf.text("NOTE: This receipt is computer generated and no signature is required.", 105, 280, { align: "center" });
+
+                pdf.save(`Resit_${currentReceiptData.refNo}.pdf`);
+                
+                document.getElementById('loading').style.display = 'none';
+                
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                if (isMobile) {
+                    alert("PDF telah dijana!\n\nSila semak folder 'Downloads' di telefon anda.");
+                }
+
+            } catch (err) {
+                document.getElementById('loading').style.display = 'none';
+                console.error("Gagal jana PDF:", err);
+                alert("PDF gagal dijana. Sila buat screenshot skrin ini sebagai simpanan.");
+            }
         }
 
     </script>
