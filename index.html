@@ -148,7 +148,7 @@
             </form>
         </div>
 
-                <div id="page-receipt" class="page">
+                       <div id="page-receipt" class="page">
             <h2 class="title" style="font-size: 1.5rem; margin-bottom:10px;">PENDAFTARAN BERJAYA!</h2>
             <p style="color: #aaa; margin-bottom: 20px; text-align: center;">Sila semak butiran di bawah.</p>
             <div id="receipt-content" class="receipt-container"></div>
@@ -159,13 +159,15 @@
             
             <button class="btn btn-back" onclick="playClick(); location.reload();" style="max-width: 200px; font-size: 1rem; margin-top:15px;">TUTUP</button>
         </div>
+    </div> <!-- INI PENTING: Penutup untuk <div class="container"> -->
+
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        <div style="color: var(--gold);">Memproses Data...</div>
     </div>
 
-    <div id="loading" class="loading-overlay"><div class="spinner"></div><div style="color: var(--gold);">Memproses Data...</div></div>
-
-
-
-        <script>
+    <script>
+    
         function playClick() { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime); gain.gain.setValueAtTime(0.5, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1); }
         
         window.onload = function() { const animBox = document.getElementById('homeAnimationBox'); for(let i=1;i<=6;i++){let b=document.createElement('div');b.className='butterfly';b.innerHTML='🦋';b.style.left=Math.random()*50+'%';b.style.bottom='-50px';b.style.animationDelay=Math.random()*10+'s';animBox.appendChild(b);} for(let i=1;i<=25;i++){let s=document.createElement('div');s.className='sparkle';s.style.top=Math.random()*100+'%';s.style.left=Math.random()*100+'%';s.style.animationDelay=Math.random()*3+'s';animBox.appendChild(s);} };
