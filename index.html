@@ -300,22 +300,24 @@ try { const url = "https://script.google.com/macros/s/AKfycbwuOHDmxaDeZCF4I-1ZjH
         }
 
         // FUNCTION PDF (1 HALAMAN PENUH)
-                // FUNCTION PDF (Dioptimakan untuk Telefon Bimbit)
+                       // FUNCTION PDF (VERSI ULTRA-SELAMAT UNTUK TELEFON)
         function downloadPDF() {
             playClick();
             const element = document.getElementById('receipt-content');
-            
-            // Semak jika user buka dari telefon atau komputer
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             
+            // MUNCULKAN LOADING SUPAYA USER TAK TEKAN BANYAK KALI
+            document.getElementById('loading').style.display = 'flex';
+            document.querySelector('#loading div:last-child').innerText = "Menjana PDF...";
+
             html2canvas(element, { 
-                scale: isMobile ? 1 : 2, // Kalau telefon, guna scale 1 (ringan). Komputer scale 2 (tajam).
+                scale: isMobile ? 1 : 2, 
                 useCORS: true, 
                 backgroundColor: '#000000', 
                 logging: false 
             }).then(canvas => {
                 const { jsPDF } = window.jspdf; 
-                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                const imgData = canvas.toDataURL('image/jpeg', isMobile ? 0.8 : 0.95);
                 
                 const pdfWidth = 210; 
                 const pdfHeight = 297; 
@@ -344,21 +346,33 @@ try { const url = "https://script.google.com/macros/s/AKfycbwuOHDmxaDeZCF4I-1ZjH
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 pdf.addImage(imgData, 'JPEG', posX, posY, finalWidth, finalHeight);
                 
+                // TUTUP LOADING
+                document.getElementById('loading').style.display = 'none';
+
                 if (isMobile) {
-                    // KALAU TELEFON: Buka PDF dalam tab/browser baru. 
-                    // User boleh "Share" atau "Save" secara manual dari situ.
-                    const pdfBlob = pdf.output('blob');
-                    const blobUrl = URL.createObjectURL(pdfBlob);
-                    window.open(blobUrl, '_blank');
-                    
-                    // Bagitahu user apa yang kena buat
-                    alert("PDF telah dibuka di tab baru. Sila tekan butang 'Share' atau 'Save' di browser telefon anda untuk menyimpannya.");
+                    // CARA TERBAIK UNTUK TELEFON: Buka PDF dalam iframe di tab baru (Tak kena block)
+                    const pdfDataUri = pdf.output('datauristring');
+                    const newWindow = window.open("");
+                    if (newWindow) {
+                        newWindow.document.write(`
+                            <html>
+                            <head><title>Resit TSRMT</title></head>
+                            <body style="margin:0;padding:0;">
+                                <iframe src="${pdfDataUri}" frameborder="0" style="border:0; width:100%; height:100vh;"></iframe>
+                            </body>
+                            </html>
+                        `);
+                        alert("PDF telah dibuka di tab baru.\n\nSila tekan butang 'Share' (ikon hantar) atau 'Save' di browser telefon anda untuk menyimpannya.");
+                    } else {
+                        alert("Pop-up disekat. Sila benarkan pop-up untuk laman ini, atau buat screenshot skrin ini sebagai simpanan.");
+                    }
                 } else {
-                    // KALAU KOMPUTER: Download terus macam biasa
+                    // KOMPUTER: DOWNLOAD TERUS
                     pdf.save(`Resit_${currentReceiptData.refNo}.pdf`);
                 }
                 
             }).catch(err => {
+                document.getElementById('loading').style.display = 'none';
                 console.error("Gagal jana PDF:", err);
                 alert("PDF gagal dijana disebabkan had memori telefon. Sila buat screenshot skrin ini sebagai simpanan.");
             });
