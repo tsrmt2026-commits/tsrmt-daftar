@@ -381,7 +381,7 @@ async function submitForm(type){
     if(type==='BARU'){formData.email=document.getElementById(`b-email`).value;formData.bank=document.getElementById(`b-bank`).value;formData.akaun=document.getElementById(`b-akaun`).value;formData.alamat=document.getElementById(`b-alamat`).value.toUpperCase();formData.icWaris=document.getElementById(`b-icWaris`).value;formData.namaWaris=document.getElementById(`b-namaWaris`).value.toUpperCase();formData.telWaris=telWaris;formData.alamatWaris=document.getElementById(`b-alamatWaris`).value.toUpperCase();formData.hubungan=document.getElementById(`b-hubungan`).value;}
 
     try{
-        const url="https://script.google.com/macros/s/AKfycbwuOHDmxaDeZCF4I-1ZjHY6UH0BDxV7cISdlEuT1kbL42Y_tMfUHgSSE2jSKJy5_jA/exec";
+        const url="https://script.google.com/macros/s/AKfycbzwNUFHyUytkBsROyYZP_ZHkaFOHC9jFdnHlwtPycgPhgJjqFKjV5JduzatfcYGE6oI/exec";
         const response=await fetch(url,{method:'POST',body:JSON.stringify(formData)});
         const result=await response.json();
         if(result.result==="success"&&result.refNo){
